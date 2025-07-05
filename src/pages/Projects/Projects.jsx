@@ -1,21 +1,21 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ReactLenis } from "lenis/react";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import "./Projects.css";
 
-import textifyImg from "@/assets/images/textify.png";
-import wishmateImg from "@/assets/images/wishmate.png";
-import connexaImg from "@/assets/images/connexa.png";
-import AWImg from "@/assets/images/AW.png";
-import GXCImg from "@/assets/images/GXC.png";
-import TDLImg from "@/assets/images/TDL.png";
-import TTTImg from "@/assets/images/TTT.png";
-import PDWAImg from "@/assets/images/PDWA.png";
-import RPSImg from "@/assets/images/RPS.png";
-import calculatorImg from "@/assets/images/calculator.png";
-import timelyImg from "@/assets/images/timely.png";
-import BNImg from "@/assets/images/BN.png";
+import textifyImg from "@/assets/images/textify.webp";
+import wishmateImg from "@/assets/images/wishmate.webp";
+import connexaImg from "@/assets/images/connexa.webp";
+import AWImg from "@/assets/images/AW.webp";
+import GXCImg from "@/assets/images/GXC.webp";
+import TDLImg from "@/assets/images/TDL.webp";
+import TTTImg from "@/assets/images/TTT.webp";
+import PDWAImg from "@/assets/images/PDWA.webp";
+import RPSImg from "@/assets/images/RPS.webp";
+import calculatorImg from "@/assets/images/calculator.webp";
+import timelyImg from "@/assets/images/timely.webp";
+import BNImg from "@/assets/images/BN.webp";
 
 const projects = [
   {
@@ -142,6 +142,8 @@ export default function Projects() {
 }
 
 function Card({ i, title, description, url, color, githubLink, liveLink }) {
+  const [loaded, setLoaded] = useState(false);
+
   const handleMouseMove = (e) => {
     const card = document.getElementById(`card-${i}`);
     const rect = card.getBoundingClientRect();
@@ -172,7 +174,9 @@ function Card({ i, title, description, url, color, githubLink, liveLink }) {
             <motion.img
               src={url}
               alt={title}
-              className="image"
+              className={`image ${loaded ? "image-loaded" : ""}`}
+              onLoad={() => setLoaded(true)}
+              loading="lazy"
               initial={{ scale: 1 }}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.4 }}

@@ -1,5 +1,5 @@
 import "./About.css";
-import HeroImg from "@/assets/images/hero.jpg";
+import HeroImg from "@/assets/images/hero.webp";
 
 export default function About() {
   return (

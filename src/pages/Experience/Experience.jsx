@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Code2, Layers, Network } from "lucide-react";
 import "./Experience.css";
 
@@ -8,12 +8,10 @@ const calc3DTransform = (e, card) => {
   const y = e.clientY - rect.top;
   const centerX = rect.width / 2;
   const centerY = rect.height / 2;
-  const rotateY = ((x - centerX) / centerX) * 12; // max 12deg
-  const rotateX = -((y - centerY) / centerY) * 12; // max 12deg
-  // shadow in opposite direction, more pronounced with tilt
+  const rotateY = ((x - centerX) / centerX) * 12;
+  const rotateX = -((y - centerY) / centerY) * 12;
   const shadowX = ((centerX - x) / centerX) * 20;
   const shadowY = ((centerY - y) / centerY) * 20 + 16;
-  // border gradient angle based on direction
   const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI) + 180;
   const borderGradient = `linear-gradient(${angle}deg, #ec4899, #3b82f6, #8b5cf6)`;
   return { rotateX, rotateY, shadowX, shadowY, borderGradient };
@@ -22,7 +20,6 @@ const calc3DTransform = (e, card) => {
 const ExperienceCard = ({ icon: Icon, title, company, period, description }) => {
   const cardRef = useRef(null);
 
-  // Handlers for 3D hover
   const handleMouseMove = (e) => {
     const card = cardRef.current;
     if (!card) return;
@@ -74,6 +71,31 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
 };
 
 const ExperienceSection = () => {
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const lenisScript = document.createElement("script");
+      lenisScript.src = "https://cdn.jsdelivr.net/npm/@studio-freight/lenis";
+      lenisScript.onload = () => {
+        const lenis = new window.Lenis({
+          duration: 1.2,
+          smooth: true,
+          direction: "vertical",
+          gestureDirection: "vertical",
+          smoothTouch: true,
+          touchMultiplier: 2,
+        });
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+      };
+      document.body.appendChild(lenisScript);
+    }
+  }, []);
+
   const experiences = [
     {
       icon: Network,
@@ -102,7 +124,7 @@ const ExperienceSection = () => {
   ];
 
   return (
-    <section className="experience-section animate-in">
+    <section className="experience-section animate-in" ref={scrollRef}>
       <div className="experience-bg-base" />
       <div className="experience-grid-bg" />
       <div className="experience-particles">

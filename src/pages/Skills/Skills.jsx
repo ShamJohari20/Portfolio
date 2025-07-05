@@ -1,62 +1,29 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo, lazy, Suspense } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import IconCloudDemo from "@/components/globe";
 
+// Lazy load the heavy IconCloud component
+const IconCloudDemo = lazy(() => import("@/components/globe"));
 
-import {
-  Code2,
-  Paintbrush,
-  Database,
-  Layout,
-  Cpu,
-  Cloud,
-  Server,
-  Code,
-  Terminal,
-} from "lucide-react";
-import {
-  FaReact,
-  FaNodeJs,
-  FaPython,
-  FaDocker,
-  FaGitAlt,
-  FaLinux,
-  FaFigma,
-  FaAws,
-  FaJava,
-} from "react-icons/fa";
-import {
-  SiNextdotjs,
-  SiTypescript,
-  SiTailwindcss,
-  SiPostgresql,
-  SiMongodb,
-  SiGraphql,
-  SiJest,
-  SiWebpack,
-  SiRedux,
-  SiFirebase,
-  SiVercel,
-  SiVite,
-  SiBootstrap,
-  SiJavascript,
-  SiSpring,
-  SiSpringboot,
-  SiOracle,
-  SiNetlify,
-  SiEclipseide,
-  SiIntellijidea,
-} from "react-icons/si";
+// Directly import Lucide icons for better tree-shaking
+import Code2 from "lucide-react/dist/esm/icons/code-2";
+import Paintbrush from "lucide-react/dist/esm/icons/paintbrush";
+import Database from "lucide-react/dist/esm/icons/database";
+import Cpu from "lucide-react/dist/esm/icons/cpu";
+import Cloud from "lucide-react/dist/esm/icons/cloud";
+import Server from "lucide-react/dist/esm/icons/server";
+
+// Import React icons individually
+import { FaReact, FaDocker, FaGitAlt, FaLinux, FaAws, FaJava } from "react-icons/fa";
+import { SiTailwindcss, SiPostgresql, SiMongodb, SiSpring, SiSpringboot, SiOracle, SiNetlify, SiEclipseide, SiIntellijidea, SiRedux, SiFirebase, SiVercel, SiVite, SiBootstrap, SiJavascript } from "react-icons/si";
 import { TbBrandVscode } from "react-icons/tb";
 import { BsFileEarmarkCode, BsGrid1X2 } from "react-icons/bs";
 import { MdAnimation } from "react-icons/md";
 import { FcWorkflow } from "react-icons/fc";
+
 import "./Skills.css";
 
-
-
-const SkillCard = ({ icon: Icon, title, skills, color, index }) => {
+const SkillCard = React.memo(({ icon: Icon, title, skills, color, index }) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -114,7 +81,7 @@ const SkillCard = ({ icon: Icon, title, skills, color, index }) => {
         <div className="skills-wrapper">
           {skills.map((skill, idx) => (
             <Badge
-              key={idx}
+              key={`${skill.name}-${idx}`}
               className="skill-badge"
               style={{
                 transitionDelay: `${idx * 0.05}s`,
@@ -129,10 +96,10 @@ const SkillCard = ({ icon: Icon, title, skills, color, index }) => {
       </CardContent>
     </Card>
   );
-};
+});
 
 const SkillsSection = () => {
-  const skillCategories = [
+  const skillCategories = useMemo(() => [
     {
       icon: Code2,
       title: "Frontend Development",
@@ -156,7 +123,6 @@ const SkillsSection = () => {
         { name: "Spring", icon: <SiSpring className="icon-color spring" /> },
         { name: "Spring Boot", icon: <SiSpringboot className="icon-color springboot" /> },
         { name: "REST APIs", icon: <BsGrid1X2 className="icon-color rest" /> },
-
       ],
     },
     {
@@ -170,7 +136,6 @@ const SkillsSection = () => {
         { name: "MongoDB", icon: <SiMongodb className="icon-color mongo" /> },
       ],
     },
-
     {
       icon: Cloud,
       title: "Cloud & DevOps",
@@ -205,32 +170,50 @@ const SkillsSection = () => {
       color: "yellow",
       skills: [
         { name: "UI Animation", icon: <MdAnimation className="icon-color pink" /> },
-        { name: "Codding", icon: <MdAnimation className="icon-color green" /> },
+        { name: "Coding", icon: <MdAnimation className="icon-color green" /> },
         { name: "Problem Solving", icon: <Cpu className="icon-color violet" /> },
         { name: "Project Building", icon: <MdAnimation className="icon-color orange" /> },
       ],
     },
-  ];
+  ], []);
 
   const sectionRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current) return;
-
-      const section = sectionRef.current;
-      const rect = section.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom >= 0;
-
-      if (isVisible) {
-        section.classList.add("animate-in");
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
       }
+
+      animationFrameRef.current = requestAnimationFrame(() => {
+        if (!sectionRef.current) return;
+
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > lastScrollY.current || 
+            Math.abs(currentScrollY - sectionRef.current.offsetTop) < window.innerHeight * 2) {
+          const section = sectionRef.current;
+          const rect = section.getBoundingClientRect();
+          const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom >= 0;
+
+          if (isVisible) {
+            section.classList.add("animate-in");
+          }
+        }
+        lastScrollY.current = currentScrollY;
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -242,7 +225,9 @@ const SkillsSection = () => {
       <div className="grid-bg"></div>
       <section className="skills-container">
         <div className="icon-cloud floating">
-          <IconCloudDemo />
+          <Suspense fallback={<div className="icon-cloud-placeholder" />}>
+            <IconCloudDemo />
+          </Suspense>
         </div>
 
         <div className="section-header">
@@ -260,8 +245,9 @@ const SkillsSection = () => {
           <div className="skills-grid">
             {skillCategories.map((category, index) => (
               <div
-                key={index}
+                key={category.title}
                 className="fade-up"
+                style={{ transitionDelay: `${index * 50}ms` }}
               >
                 <SkillCard {...category} index={index} />
               </div>
@@ -279,4 +265,4 @@ const SkillsSection = () => {
   );
 };
 
-export default SkillsSection;
+export default React.memo(SkillsSection);

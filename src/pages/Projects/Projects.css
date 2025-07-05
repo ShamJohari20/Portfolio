@@ -12,11 +12,13 @@
   background-color: var(--black);
   color: var(--white);
   font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .projects-section {
   padding-top: 4rem;
-  padding-bottom: 0; 
+  padding-bottom: 0;
   background-color: var(--slate-950);
   width: 100%;
 }
@@ -38,11 +40,17 @@
   max-width: 800px;
   transform-origin: top;
   will-change: transform;
-  transition: transform 0.3s ease-out;
-  transform: scale(0.9);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  transform: perspective(1200px) rotateX(0deg) rotateY(0deg) scale(0.95);
   margin-top: 1vh;
+  border: 2px solid transparent;
+  transform-style: preserve-3d;
 }
 
+.project-card:hover {
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.3), 0 8px 16px rgba(202, 50, 154, 0.3);
+  border: 3px solid rgba(99, 102, 241, 0.4);
+}
 
 .card-inner {
   display: flex;
@@ -221,7 +229,7 @@
 }
 
 .footer-spacer {
-  height: 0rem; 
+  height: 0rem;
   width: 100%;
 }
 
@@ -267,24 +275,12 @@
   }
 }
 
-.project-card {
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.3s ease;
-  transform: perspective(1200px) rotateX(0deg) rotateY(0deg) scale(0.95);
+
+
+.image {
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
-
-
-.project-card {
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
-  transform: perspective(1200px) rotateX(0deg) rotateY(0deg) scale(0.95);
-  border: 2px solid transparent;
+.image-loaded {
+  opacity: 1;
 }
-
-.project-card:hover {
-  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.3), 0 8px 16px rgba(202, 50, 154, 0.3);
-  border: 3px solid rgba(99, 102, 241, 0.4); 
-}
-

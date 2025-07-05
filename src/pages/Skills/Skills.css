@@ -1,3 +1,4 @@
+/* Skills.css - Optimized for Performance and Smooth Scrolling */
 
 /* Base Section Styles */
 .skills-section {
@@ -12,14 +13,16 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px, 0);
   transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
               transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+  z-index: 1;
 }
 
 .skills-section.animate-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 
 /* Layout Components */
@@ -39,10 +42,15 @@
 .skills-grid {
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   width: 100%;
   position: relative;
   z-index: 25;
+}
+
+.skills-grid-wrapper {
+  width: 100%;
+  position: relative;
 }
 
 /* Typography */
@@ -54,6 +62,8 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 15;
 }
 
 .section-title {
@@ -68,6 +78,7 @@
   padding: 0 3rem;
   text-transform: uppercase;
   letter-spacing: 3px;
+  will-change: transform;
 }
 
 .section-title::before,
@@ -79,6 +90,7 @@
   height: 2px;
   background: linear-gradient(90deg, transparent, #6366f1, transparent);
   transition: all 0.4s ease;
+  will-change: transform;
 }
 
 .section-title::before { right: 100%; }
@@ -94,6 +106,7 @@
   line-height: 1.6;
   max-width: 600px;
   transition: all 0.3s ease;
+  will-change: transform, opacity;
 }
 
 .section-subtitle:hover {
@@ -119,6 +132,7 @@
   will-change: transform, box-shadow;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   position: relative;
+  isolation: isolate;
 }
 
 .skill-card::before {
@@ -144,6 +158,7 @@
   );
   opacity: 0;
   transition: opacity 0.4s ease;
+  z-index: -1;
 }
 
 .skill-card:hover::after {
@@ -174,6 +189,7 @@
   background-clip: text;
   color: transparent;
   transition: all 0.3s ease;
+  will-change: transform;
 }
 
 .skill-card:hover .card-title {
@@ -188,10 +204,7 @@
   border: 1px solid rgba(99, 102, 241, 0.2);
   flex-shrink: 0;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.skill-icon {
-  transition: transform 0.3s ease;
+  will-change: transform, background, box-shadow;
 }
 
 .skill-card:hover .card-icon {
@@ -237,6 +250,11 @@
   color: #eab308;
 }
 
+.icon-size {
+  width: 24px;
+  height: 24px;
+}
+
 /* Badge Styles */
 .skills-wrapper {
   margin-top: auto;
@@ -258,8 +276,8 @@
   font-size: 0.9rem;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   backdrop-filter: blur(5px);
+  will-change: transform, background, box-shadow;
   transform: translateZ(0);
-  will-change: transform;
 }
 
 .skill-badge:hover {
@@ -269,12 +287,17 @@
   border-color: rgba(59, 130, 246, 0.4);
 }
 
-.badge-icon:hover .skill-icon {
-  transform: scale(1.2);
+.badge-icon {
+  display: flex;
+  transition: transform 0.3s ease;
 }
 
 .skill-badge:hover .badge-icon {
   transform: scale(1.2) rotate(5deg);
+}
+
+.badge-text {
+  white-space: nowrap;
 }
 
 /* Background Elements */
@@ -290,6 +313,8 @@
   pointer-events: none;
   animation: grid-move 180s linear infinite;
   z-index: -1;
+  transform: translate3d(0, 0, 0);
+  will-change: background-position;
 }
 
 .icon-cloud {
@@ -299,10 +324,23 @@
   position: relative;
   z-index: 10;
   opacity: 0.9;
+  transform: translate3d(0, 0, 0);
+}
+
+.icon-cloud-placeholder {
+  width: min(500px, 70vw);
+  height: min(500px, 70vw);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  margin: 1rem auto 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .floating {
-  animation: float 8s ease-in-out infinite, pulse-opacity 4s ease-in-out infinite alternate;
+  animation: float 8s ease-in-out infinite;
+  will-change: transform;
 }
 
 .decoration-elements {
@@ -319,6 +357,7 @@
   filter: blur(60px);
   opacity: 0.3;
   z-index: -1;
+  will-change: transform;
 }
 
 .orb-1 {
@@ -327,7 +366,7 @@
   background: radial-gradient(circle, #6366f1, transparent 70%);
   top: 20%;
   left: 10%;
-  animation: drift 25s linear infinite, pulse-size 15s ease-in-out infinite alternate;
+  animation: drift 25s linear infinite;
 }
 
 .orb-2 {
@@ -336,7 +375,7 @@
   background: radial-gradient(circle, #8b5cf6, transparent 70%);
   bottom: 20%;
   right: 15%;
-  animation: drift 30s linear infinite reverse, pulse-size 20s ease-in-out infinite alternate;
+  animation: drift 30s linear infinite reverse;
 }
 
 .pulse-ring {
@@ -349,49 +388,79 @@
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform, opacity;
+}
+
+/* Shimmer Effect */
+.shimmer-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  z-index: -1;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }
 
 /* Technology Color Classes */
-.react { color: #61dafb; }
-.ts { color: #3178c6; }
-.tailwind { color: #38b2ac; }
-.html { color: #e34f26; }
-.css { color: #1572b6; }
-.node { color: #339933; }
-.python { color: #3776ab; }
-.postgres { color: #336791; }
-.mongo { color: #47a248; }
-.rest { color: #ff6c37; }
-.graphql { color: #e10098; }
-.figma { color: #f24e1e; }
-.aws { color: #ff9900; }
-.docker { color: #2496ed; }
-.kube { color: #326ce5; }
-.git { color: #f05032; }
-.linux { color: #fcc624; }
-.vscode { color: #007acc; }
-.jest { color: #c21325; }
-.webpack { color: #8dd6f9; }
-.redux { color: #764abc; }
-.firebase { color: #ffca28; }
-.vite { color: #646cff; }
+.icon-color.html { color: #e34f26; }
+.icon-color.css { color: #1572b6; }
+.icon-color.js { color: #f7df1e; }
+.icon-color.bootstrap { color: #7952b3; }
+.icon-color.tailwind { color: #38b2ac; }
+.icon-color.react { color: #61dafb; }
+.icon-color.java { color: #007396; }
+.icon-color.spring { color: #6db33f; }
+.icon-color.springboot { color: #6db33f; }
+.icon-color.oracle { color: #f80000; }
+.icon-color.plsql { color: #ff5733; }
+.icon-color.postgres { color: #336791; }
+.icon-color.mongo { color: #47a248; }
+.icon-color.rest { color: #f97316; }
+.icon-color.aws { color: #ff9900; }
+.icon-color.docker { color: #2496ed; }
+.icon-color.kube { color: #326ce5; }
+.icon-color.git { color: #f05032; }
+.icon-color.linux { color: #fcc624; }
+.icon-color.vscode { color: #007acc; }
+.icon-color.eclipse { color: #2c2255; }
+.icon-color.intellij { color: #000000; }
+.icon-color.redux { color: #764abc; }
+.icon-color.firebase { color: #ffca28; }
+.icon-color.netlify { color: #00c7b7; }
+.icon-color.vite { color: #646cff; }
+.icon-color.pink { color: #ec4899; }
+.icon-color.green { color: #10b981; }
+.icon-color.violet { color: #8b5cf6; }
+.icon-color.orange { color: #f97316; }
 
 /* Animation Classes */
 .fade-up {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px, 0);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
 }
 
 .skills-section.animate-in .fade-up {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 
 /* Keyframe Animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -15px, 0); }
 }
 
 @keyframes grid-move {
@@ -422,22 +491,13 @@
   }
 }
 
-@keyframes pulse-opacity {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; }
-}
-
-@keyframes pulse-size {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .skills-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .icon-cloud {
+  
+  .icon-cloud, .icon-cloud-placeholder {
     width: min(400px, 60vw);
     height: min(400px, 60vw);
   }
@@ -447,18 +507,32 @@
   .skills-section {
     padding: 3rem 0;
   }
+  
   .section-title {
     padding: 0 2rem;
   }
+  
   .section-title::before,
   .section-title::after {
     width: 40px;
   }
+  
   .orb-1, .orb-2 {
     display: none;
   }
-  .skills-grid {
-    grid-template-columns: 1fr;
+  
+  .skill-card {
+    transform-style: flat;
+    perspective: none;
+  }
+  
+  .skill-badge {
+    transform: none !important;
+    will-change: auto;
+  }
+  
+  .floating {
+    animation: none;
   }
 }
 
@@ -466,81 +540,32 @@
   .skills-container {
     padding: 0 1.5rem;
   }
+  
   .section-title {
     padding: 0 1rem;
   }
+  
   .section-title::before,
   .section-title::after {
     display: none;
   }
+  
   .card-content {
     padding: 1.5rem;
   }
+  
   .pulse-ring {
     width: min(500px, 90vw);
     height: min(500px, 90vw);
   }
-  .icon-cloud {
+  
+  .icon-cloud, .icon-cloud-placeholder {
     width: min(450px, 95vw);
     height: min(450px, 95vw);
     margin: 1.1rem 1rem 5rem;
   }
-}
-
-.icon-color.js {
-  color: #f7df1e; 
-}
-
-.icon-color.bootstrap {
-  color: #7952b3; 
-}
-
-.icon-color.java { color: #007396; }
-.icon-color.spring { color: #6db33f; }
-.icon-color.springboot { color: #6db33f; }
-.icon-color.node { color: #68a063; }
-.icon-color.express { color: #000000; }
-.icon-color.python { color: #3776ab; }
-.icon-color.postgres { color: #336791; }
-.icon-color.mongo { color: #47a248; }
-.icon-color.rest { color: #f97316; }
-.icon-color.graphql { color: #e535ab; }
-.icon-color.micro { color: #22c55e; } /* fallback for microservices */
-.icon-color.oracle {
-  color: #f80000;
-}
-.icon-color.plsql {
-  color: #ff5733;
-}
-.icon-color.postgres {
-  color: #336791;
-}
-.icon-color.mongo {
-  color: #47a248;
-}
-.icon-color.eclipse {
-  color: #2c2255;
-}
-
-.icon-color.intellij {
-  color: #000000;
-}
-
-.icon-color.netlify {
-  color: #00c7b7;
-}
-.icon-color.pink {
-  color: #ec4899; 
-}
-
-.icon-color.green {
-  color: #10b981; 
-}
-
-.icon-color.violet {
-  color: #8b5cf6; 
-}
-
-.icon-color.orange {
-  color: #f97316; 
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
 }
