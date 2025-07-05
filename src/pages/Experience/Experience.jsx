@@ -1,6 +1,12 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { Code2, Layers, Network } from "lucide-react";
 import "./Experience.css";
+
+// Helper for pointer detection
+const isTouchDevice = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(pointer: coarse)").matches;
 
 const calc3DTransform = (e, card) => {
   const rect = card.getBoundingClientRect();
@@ -19,8 +25,11 @@ const calc3DTransform = (e, card) => {
 
 const ExperienceCard = ({ icon: Icon, title, company, period, description }) => {
   const cardRef = useRef(null);
+  const isTouch = isTouchDevice();
 
+  // Handlers for 3D hover only on non-touch devices
   const handleMouseMove = (e) => {
+    if (isTouch) return;
     const card = cardRef.current;
     if (!card) return;
     const { rotateX, rotateY, shadowX, shadowY, borderGradient } = calc3DTransform(e, card);
@@ -33,6 +42,7 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
   };
 
   const handleMouseLeave = () => {
+    if (isTouch) return;
     const card = cardRef.current;
     if (!card) return;
     card.style.setProperty("--rotateX", `0deg`);
@@ -43,12 +53,23 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
     card.classList.remove("is-3d-hovered");
   };
 
+  // Style disables 3D transforms and sets flat shadow for mobile
+  const cardStyle = isTouch
+    ? {
+        transform: "none",
+        boxShadow: "0 4px 14px rgba(0,0,0,0.12)",
+        perspective: "none",
+        willChange: "auto",
+      }
+    : {};
+
   return (
     <div
       className="experience-card"
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      style={cardStyle}
     >
       <div className="experience-card-glass" />
       <div className="experience-card-border" />
@@ -71,31 +92,6 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
 };
 
 const ExperienceSection = () => {
-  const scrollRef = useRef(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const lenisScript = document.createElement("script");
-      lenisScript.src = "https://cdn.jsdelivr.net/npm/@studio-freight/lenis";
-      lenisScript.onload = () => {
-        const lenis = new window.Lenis({
-          duration: 1.2,
-          smooth: true,
-          direction: "vertical",
-          gestureDirection: "vertical",
-          smoothTouch: true,
-          touchMultiplier: 2,
-        });
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-      };
-      document.body.appendChild(lenisScript);
-    }
-  }, []);
-
   const experiences = [
     {
       icon: Network,
@@ -124,7 +120,7 @@ const ExperienceSection = () => {
   ];
 
   return (
-    <section className="experience-section animate-in" ref={scrollRef}>
+    <section className="experience-section animate-in">
       <div className="experience-bg-base" />
       <div className="experience-grid-bg" />
       <div className="experience-particles">

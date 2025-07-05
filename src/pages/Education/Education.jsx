@@ -10,6 +10,12 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
+// Helper for pointer detection
+const isTouchDevice = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(pointer: coarse)").matches;
+
 // 3D transform calculation utility
 const calc3DTransform = (e, card) => {
   const rect = card.getBoundingClientRect();
@@ -17,12 +23,10 @@ const calc3DTransform = (e, card) => {
   const y = e.clientY - rect.top;
   const centerX = rect.width / 2;
   const centerY = rect.height / 2;
-  const rotateY = ((x - centerX) / centerX) * 12; 
-  const rotateX = -((y - centerY) / centerY) * 12; 
-  // shadow in opposite direction, more pronounced with tilt
+  const rotateY = ((x - centerX) / centerX) * 12;
+  const rotateX = -((y - centerY) / centerY) * 12;
   const shadowX = ((centerX - x) / centerX) * 20;
   const shadowY = ((centerY - y) / centerY) * 20 + 16;
-  // border gradient angle based on direction
   const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI) + 180;
   const borderGradient = `linear-gradient(${angle}deg, #ec4899, #3b82f6, #8b5cf6)`;
   return { rotateX, rotateY, shadowX, shadowY, borderGradient };
@@ -30,9 +34,11 @@ const calc3DTransform = (e, card) => {
 
 const EducationCard = ({ edu, index, hoveredIndex, setHoveredIndex }) => {
   const cardRef = useRef(null);
+  const isTouch = isTouchDevice();
 
-  // Handlers for 3D hover
+  // Handlers for 3D hover (desktop only)
   const handleMouseMove = (e) => {
+    if (isTouch) return;
     const card = cardRef.current;
     if (!card) return;
     const { rotateX, rotateY, shadowX, shadowY, borderGradient } = calc3DTransform(e, card);
@@ -46,6 +52,7 @@ const EducationCard = ({ edu, index, hoveredIndex, setHoveredIndex }) => {
   };
 
   const handleMouseLeave = () => {
+    if (isTouch) return;
     const card = cardRef.current;
     if (!card) return;
     card.style.setProperty("--rotateX", `0deg`);
@@ -56,6 +63,16 @@ const EducationCard = ({ edu, index, hoveredIndex, setHoveredIndex }) => {
     card.classList.remove("is-3d-hovered");
     setHoveredIndex(null);
   };
+
+  // Flat style for mobile/touch devices
+  const cardStyle = isTouch
+    ? {
+        transform: "none",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+        perspective: "none",
+        willChange: "auto"
+      }
+    : {};
 
   return (
     <motion.div
@@ -75,6 +92,7 @@ const EducationCard = ({ edu, index, hoveredIndex, setHoveredIndex }) => {
       onBlur={() => setHoveredIndex(null)}
       aria-labelledby={`education-${index}-title`}
       tabIndex="0"
+      style={cardStyle}
     >
       <div className="education-card-content">
         <div className="education-card-header">

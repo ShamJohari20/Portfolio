@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { ReactLenis } from "lenis/react";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
@@ -16,6 +16,12 @@ import RPSImg from "@/assets/images/RPS.webp";
 import calculatorImg from "@/assets/images/calculator.webp";
 import timelyImg from "@/assets/images/timely.webp";
 import BNImg from "@/assets/images/BN.webp";
+
+// Helper for pointer detection
+const isTouchDevice = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(pointer: coarse)").matches;
 
 const projects = [
   {
@@ -142,9 +148,12 @@ export default function Projects() {
 }
 
 function Card({ i, title, description, url, color, githubLink, liveLink }) {
-  const [loaded, setLoaded] = useState(false);
+  // Touch detection
+  const isTouch = isTouchDevice();
 
+  // Only enable 3D effect on non-touch devices
   const handleMouseMove = (e) => {
+    if (isTouch) return;
     const card = document.getElementById(`card-${i}`);
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -157,9 +166,19 @@ function Card({ i, title, description, url, color, githubLink, liveLink }) {
   };
 
   const handleMouseLeave = () => {
+    if (isTouch) return;
     const card = document.getElementById(`card-${i}`);
     card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale(0.95)`;
   };
+
+  // Flat style for mobile/touch devices
+  const cardStyle = isTouch
+    ? {
+        transform: "none",
+        perspective: "none",
+        willChange: "auto"
+      }
+    : {};
 
   return (
     <div className="card-container">
@@ -168,24 +187,23 @@ function Card({ i, title, description, url, color, githubLink, liveLink }) {
         id={`card-${i}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        style={cardStyle}
       >
         <div className="card-inner">
           <div className="card-image">
             <motion.img
               src={url}
               alt={title}
-              className={`image ${loaded ? "image-loaded" : ""}`}
-              onLoad={() => setLoaded(true)}
-              loading="lazy"
+              className="image"
               initial={{ scale: 1 }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={!isTouch ? { scale: 1.05 } : {}}
               transition={{ duration: 0.4 }}
             />
             <motion.div
               className="overlay"
               style={{ backgroundColor: color }}
               initial={{ opacity: 0 }}
-              whileHover={{ opacity: 0.3 }}
+              whileHover={!isTouch ? { opacity: 0.3 } : {}}
               transition={{ duration: 0.3 }}
             />
             <div className="project-number">Project {i + 1}</div>
@@ -204,7 +222,7 @@ function Card({ i, title, description, url, color, githubLink, liveLink }) {
                   href={githubLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ y: -3 }}
+                  whileHover={!isTouch ? { y: -3 } : {}}
                   className="link"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon">
@@ -216,7 +234,7 @@ function Card({ i, title, description, url, color, githubLink, liveLink }) {
                   href={liveLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ y: -3 }}
+                  whileHover={!isTouch ? { y: -3 } : {}}
                   className="link"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon">

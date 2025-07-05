@@ -1,32 +1,60 @@
-import React, { useEffect, useRef, useMemo, lazy, Suspense } from "react";
+import React, { useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import IconCloudDemo from "@/components/globe";
 
-// Lazy load the heavy IconCloud component
-const IconCloudDemo = lazy(() => import("@/components/globe"));
-
-// Directly import Lucide icons for better tree-shaking
-import Code2 from "lucide-react/dist/esm/icons/code-2";
-import Paintbrush from "lucide-react/dist/esm/icons/paintbrush";
-import Database from "lucide-react/dist/esm/icons/database";
-import Cpu from "lucide-react/dist/esm/icons/cpu";
-import Cloud from "lucide-react/dist/esm/icons/cloud";
-import Server from "lucide-react/dist/esm/icons/server";
-
-// Import React icons individually
-import { FaReact, FaDocker, FaGitAlt, FaLinux, FaAws, FaJava } from "react-icons/fa";
-import { SiTailwindcss, SiPostgresql, SiMongodb, SiSpring, SiSpringboot, SiOracle, SiNetlify, SiEclipseide, SiIntellijidea, SiRedux, SiFirebase, SiVercel, SiVite, SiBootstrap, SiJavascript } from "react-icons/si";
+import {
+  Code2,
+  Paintbrush,
+  Database,
+  Cpu,
+  Cloud,
+  Server,
+} from "lucide-react";
+import {
+  FaReact,
+  FaJava,
+  FaAws,
+  FaDocker,
+  FaGitAlt,
+  FaLinux,
+} from "react-icons/fa";
+import {
+  SiTailwindcss,
+  SiPostgresql,
+  SiMongodb,
+  SiSpring,
+  SiSpringboot,
+  SiOracle,
+  SiRedux,
+  SiFirebase,
+  SiNetlify,
+  SiVercel,
+  SiVite,
+  SiBootstrap,
+  SiJavascript,
+  SiEclipseide,
+  SiIntellijidea,
+} from "react-icons/si";
 import { TbBrandVscode } from "react-icons/tb";
 import { BsFileEarmarkCode, BsGrid1X2 } from "react-icons/bs";
 import { MdAnimation } from "react-icons/md";
 import { FcWorkflow } from "react-icons/fc";
-
 import "./Skills.css";
 
-const SkillCard = React.memo(({ icon: Icon, title, skills, color, index }) => {
+// Helper for pointer detection
+const isTouchDevice = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(pointer: coarse)").matches;
+
+const SkillCard = ({ icon: Icon, title, skills, color, index }) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
+    // Skip effect on mobile/touch devices
+    if (isTouchDevice()) return;
+
     const card = cardRef.current;
     if (!card) return;
 
@@ -60,18 +88,23 @@ const SkillCard = React.memo(({ icon: Icon, title, skills, color, index }) => {
     };
   }, []);
 
+  // Only apply transform styles on non-touch devices
+  const cardStyle =
+    !isTouchDevice()
+      ? {
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          transformStyle: "preserve-3d",
+          animationDelay: `${index * 0.1}s`,
+        }
+      : {
+          animationDelay: `${index * 0.1}s`,
+        };
+
   return (
-    <Card
-      ref={cardRef}
-      className="skill-card"
-      style={{
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-        transformStyle: "preserve-3d",
-        animationDelay: `${index * 0.1}s`
-      }}
-    >
-      <div className="shimmer-bg animate-shimmer"></div>
-      <CardContent className="card-content">
+    <Card ref={cardRef} className="skill-card" style={cardStyle}>
+      {/* Shimmer effect, only on desktop */}
+      {!isTouchDevice() && <div className="shimmer-bg animate-shimmer"></div>}
+      <CardContent className="card-content" style={{ position: "relative", zIndex: 3 }}>
         <div className="card-header">
           <div className={`card-icon ${color}-icon`}>
             <Icon className="icon-size" />
@@ -81,12 +114,16 @@ const SkillCard = React.memo(({ icon: Icon, title, skills, color, index }) => {
         <div className="skills-wrapper">
           {skills.map((skill, idx) => (
             <Badge
-              key={`${skill.name}-${idx}`}
+              key={idx}
               className="skill-badge"
-              style={{
-                transitionDelay: `${idx * 0.05}s`,
-                transform: "translateZ(20px)"
-              }}
+              style={
+                !isTouchDevice()
+                  ? {
+                      transitionDelay: `${idx * 0.05}s`,
+                      transform: "translateZ(20px)",
+                    }
+                  : { transitionDelay: `${idx * 0.05}s` }
+              }
             >
               <span className="badge-icon">{skill.icon}</span>
               <span className="badge-text">{skill.name}</span>
@@ -96,10 +133,10 @@ const SkillCard = React.memo(({ icon: Icon, title, skills, color, index }) => {
       </CardContent>
     </Card>
   );
-});
+};
 
 const SkillsSection = () => {
-  const skillCategories = useMemo(() => [
+  const skillCategories = [
     {
       icon: Code2,
       title: "Frontend Development",
@@ -158,7 +195,7 @@ const SkillsSection = () => {
         { name: "Eclipse", icon: <SiEclipseide className="icon-color eclipse" /> },
         { name: "IntelliJ IDEA", icon: <SiIntellijidea className="icon-color intellij"/> },
         { name: "Redux", icon: <SiRedux className="icon-color redux" /> },
-        { name: "Firebase", icon: <SiFirebase className="icon-color firebase" /> }, 
+        { name: "Firebase", icon: <SiFirebase className="icon-color firebase" /> },
         { name: "Netlify", icon: <SiNetlify className="icon-color netlify" /> },
         { name: "Vercel", icon: <SiVercel className="icon-color" /> },
         { name: "Vite", icon: <SiVite className="icon-color vite" /> },
@@ -170,50 +207,32 @@ const SkillsSection = () => {
       color: "yellow",
       skills: [
         { name: "UI Animation", icon: <MdAnimation className="icon-color pink" /> },
-        { name: "Coding", icon: <MdAnimation className="icon-color green" /> },
+        { name: "Codding", icon: <MdAnimation className="icon-color green" /> },
         { name: "Problem Solving", icon: <Cpu className="icon-color violet" /> },
         { name: "Project Building", icon: <MdAnimation className="icon-color orange" /> },
       ],
     },
-  ], []);
+  ];
 
   const sectionRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+      if (!sectionRef.current) return;
+
+      const section = sectionRef.current;
+      const rect = section.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom >= 0;
+
+      if (isVisible) {
+        section.classList.add("animate-in");
       }
-
-      animationFrameRef.current = requestAnimationFrame(() => {
-        if (!sectionRef.current) return;
-
-        const currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollY.current || 
-            Math.abs(currentScrollY - sectionRef.current.offsetTop) < window.innerHeight * 2) {
-          const section = sectionRef.current;
-          const rect = section.getBoundingClientRect();
-          const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom >= 0;
-
-          if (isVisible) {
-            section.classList.add("animate-in");
-          }
-        }
-        lastScrollY.current = currentScrollY;
-      });
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll);
     handleScroll();
 
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -225,11 +244,8 @@ const SkillsSection = () => {
       <div className="grid-bg"></div>
       <section className="skills-container">
         <div className="icon-cloud floating">
-          <Suspense fallback={<div className="icon-cloud-placeholder" />}>
-            <IconCloudDemo />
-          </Suspense>
+          <IconCloudDemo />
         </div>
-
         <div className="section-header">
           <div className="title-decorator left"></div>
           <h2 className="section-title">
@@ -240,21 +256,19 @@ const SkillsSection = () => {
             Technologies I've mastered and love working with
           </p>
         </div>
-
         <div className="skills-grid-wrapper">
           <div className="skills-grid">
             {skillCategories.map((category, index) => (
               <div
-                key={category.title}
+                key={index}
                 className="fade-up"
-                style={{ transitionDelay: `${index * 50}ms` }}
+                style={{ animationDelay: `${index * 0.12}s` }}
               >
                 <SkillCard {...category} index={index} />
               </div>
             ))}
           </div>
         </div>
-
         <div className="decoration-elements">
           <div className="orb orb-1"></div>
           <div className="orb orb-2"></div>
@@ -265,4 +279,4 @@ const SkillsSection = () => {
   );
 };
 
-export default React.memo(SkillsSection);
+export default SkillsSection;

@@ -8,6 +8,11 @@ import SparklesText from "@/components/ui/sparkles-text";
 import { FlipWords } from "@/components/ui/flip-words";
 import "./Hero.css";
 
+const isTouchDevice = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(pointer: coarse)").matches;
+
 const GridBackground = () => (
   <div className="hero-grid-background">
     <div className="hero-grid-mask">
@@ -49,7 +54,6 @@ export default function Hero() {
     "Full Stack Java Developer",
   ];
 
-  // 3D Animation logic with useRef
   const codeCardRef = useRef(null);
 
   useEffect(() => {
@@ -58,7 +62,7 @@ export default function Hero() {
 
   useEffect(() => {
     const card = codeCardRef.current;
-    if (!card) return;
+    if (!card || isTouchDevice()) return;
 
     const handleMouseMove = (e) => {
       const rect = card.getBoundingClientRect();
@@ -92,6 +96,16 @@ export default function Hero() {
       card.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, []);
+
+  // For mobile, flatten the code card style
+  const codeCardStyle = isTouchDevice()
+    ? {
+        transform: "none",
+        willChange: "auto",
+        boxShadow:
+          "0 6px 18px 0 rgba(244,114,182,0.14),0 1px 8px 0 rgba(40,40,80,0.18),0 16px 32px -6px rgba(0,0,0,0.20),0 0.5px 2px 0 rgba(244,114,182,0.05)",
+      }
+    : {};
 
   return (
     <main className="hero">
@@ -154,10 +168,10 @@ export default function Hero() {
             </div>
 
             <div className="hero__code-container">
-              {/* Add 3D animation and box-shadow to this card */}
               <div
                 className="hero__code-window developer-card-3d"
                 ref={codeCardRef}
+                style={codeCardStyle}
               >
                 <div className="hero__window-header">
                   <div className="hero__window-dot hero__window-dot--red" />
@@ -201,7 +215,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Enhanced Scroll Bubble */}
           <div className="hero__scroll-bubble">
             <div className="bubble-content">
               <i className="fas fa-mouse bubble-icon" />

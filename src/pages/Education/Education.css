@@ -19,7 +19,6 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Section */
 .education-section {
   background: linear-gradient(to bottom, var(--bg-dark), var(--bg-dark-alt));
   color: var(--text-main);
@@ -47,7 +46,6 @@
   background: linear-gradient(to top, var(--bg-dark), transparent 50%, var(--bg-dark) 100%);
 }
 
-/* Container & Header */
 .education-container {
   max-width: 1280px;
   margin: 0 auto;
@@ -85,14 +83,12 @@
   opacity: 0.9;
 }
 
-/* Card Grid */
 .education-card-grid {
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-/* Card */
 .education-card {
   position: relative;
   background: var(--bg-card);
@@ -135,7 +131,6 @@
   transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Card Hover */
 .education-card:hover,
 .education-card:focus-within {
   border-color: var(--primary);
@@ -156,7 +151,6 @@
   transform: scaleX(1);
 }
 
-/* Card Content */
 .education-card-content {
   display: flex;
   flex-direction: column;
@@ -169,7 +163,6 @@
   transform: translateZ(50px);
 }
 
-/* Card Header */
 .education-card-header {
   display: flex;
   flex-direction: column;
@@ -207,7 +200,6 @@
   font-size: 0.95rem;
 }
 
-/* Description */
 .education-description {
   font-size: 0.875rem;
   border-left: 2px solid var(--primary);
@@ -216,7 +208,6 @@
   line-height: 1.7;
 }
 
-/* Achievements */
 .education-achievements h4 {
   font-size: 0.875rem;
   font-weight: 600;
@@ -252,7 +243,6 @@
   box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
 }
 
-/* Skills */
 .education-skills {
   display: flex;
   flex-wrap: wrap;
@@ -277,7 +267,6 @@
   box-shadow: 0 2px 4px rgba(236, 72, 153, 0.2);
 }
 
-/* Icons */
 .icon {
   width: 1.25rem;
   height: 1.25rem;
@@ -307,7 +296,6 @@
   border-width: 0;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .education-section {
     padding: 6rem 0;
@@ -315,76 +303,14 @@
   .education-card {
     padding: 1.5rem;
     transform: none !important;
-  }
-  .education-card:hover::before {
-    display: none;
-  }
-}
-
-
-/* 3D Card Hover Animation */
-.education-card {
-  transform: translateY(0) scale(1) perspective(900px) rotateX(0deg) rotateY(0deg);
-  transition:
-    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    z-index 0s;
-  perspective: 900px;
-  will-change: transform, box-shadow;
-  z-index: 1;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-/* 3D hover effect, values set by JS */
-.education-card.is-3d-hovered {
-  z-index: 2;
-  --rotateX: 0deg;
-  --rotateY: 0deg;
-  --shadowX: 0px;
-  --shadowY: 12px;
-  --borderGradient: linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6);
-  transform:
-    perspective(900px)
-    rotateX(var(--rotateX, 0deg))
-    rotateY(var(--rotateY, 0deg))
-    scale(1.04);
-  box-shadow:
-    var(--shadowX, 0px) var(--shadowY, 12px) 40px 0 rgba(99, 102, 241, 0.30),
-    0 2px 20px 0 rgba(0,0,0,0.10);
-  border-color: var(--primary);
-}
-
-/* Fancy border animation on hover (use ::after for colored border) */
-.education-card::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--borderGradient, linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: 
-    transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 2;
-}
-
-.education-card.is-3d-hovered::after,
-.education-card.card-hovered::after {
-  transform: scaleX(1);
-}
-
-/* Responsive: no 3D effect on small screens */
-@media (max-width: 768px) {
-  .education-card {
-    padding: 1.5rem;
-    transform: none !important;
+    /* Disable 3D effect on mobile */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+    perspective: none !important;
+    will-change: auto !important;
   }
   .education-card.is-3d-hovered {
     transform: none !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
   }
   .education-card::after {
     display: none;
