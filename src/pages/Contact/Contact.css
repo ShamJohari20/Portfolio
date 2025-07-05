@@ -1,0 +1,107 @@
+.contact-main {
+  padding-top: 5rem; 
+  background-color: #04081A;
+  color: white;
+  min-height: 100vh;
+}
+
+.contact-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .contact-hero {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-hero {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.contact-heading {
+  font-size: 2.25rem; 
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #38bdf8 0%, #f472b6 30%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-subheading {
+  color: #d1d5db;
+  font-size: 1.125rem;
+}
+
+.contact-icon {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.contact-icon.mail {
+  background-color: rgba(168, 85, 247, 0.1);
+}
+
+.contact-icon.map {
+  background-color: rgba(236, 72, 153, 0.1);
+}
+
+.contact-form-wrapper {
+  backdrop-filter: blur(16px);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form-wrapper:hover {
+  border:#76485f solid 0.5px;
+}
+
+.contact-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-width: 1px;
+  border-style: solid;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.contact-input:focus {
+  border-color: #3b82f6; 
+}
+
+.contact-submit {
+  width: 100%;
+  background: linear-gradient(90deg, #38bdf8 0%, #f472b6 90%, #ec4899 100%);
+  color: black;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.contact-submit:hover {
+  opacity: 0.9;
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}

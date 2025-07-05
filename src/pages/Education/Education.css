@@ -1,0 +1,392 @@
+:root {
+  --bg-dark: #04081a;
+  --bg-dark-alt: #0a0f29;
+  --bg-card: rgba(17, 24, 39, 0.7);
+  --grid-line: rgba(100, 100, 255, 0.05);
+
+  --primary: #6366f1;         
+  --primary-mid: #8b5cf6;     
+  --secondary: #ec4899;       
+  --primary-light: rgba(99, 102, 241, 0.1);
+  --secondary-light: rgba(236, 72, 153, 0.1);
+
+  --text-main: #e0e7ff;
+  --text-secondary: #c7d2fe;
+  --text-muted: #9ca3af;
+  --accent: #facc15;
+
+  --border-radius: 1rem;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Section */
+.education-section {
+  background: linear-gradient(to bottom, var(--bg-dark), var(--bg-dark-alt));
+  color: var(--text-main);
+  padding: 10rem 0;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.education-grid-background::before,
+.education-grid-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.education-grid-background::before {
+  background-image:
+    repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 50px),
+    repeating-linear-gradient(180deg, var(--grid-line) 0 1px, transparent 1px 50px);
+}
+
+.education-grid-background::after {
+  background: linear-gradient(to top, var(--bg-dark), transparent 50%, var(--bg-dark) 100%);
+}
+
+/* Container & Header */
+.education-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.education-header {
+  text-align: center;
+  margin-bottom: 5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.education-title {
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 800;
+  background: linear-gradient(to right, var(--primary), var(--primary-mid), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.education-subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-weight: 500;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Card Grid */
+.education-card-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Card */
+.education-card {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  transition: var(--transition);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  overflow: hidden;
+}
+
+.education-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    transparent 50%,
+    var(--secondary-light)
+  );
+  opacity: 0;
+  transition: var(--transition);
+  z-index: -1;
+}
+
+.education-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Card Hover */
+.education-card:hover,
+.education-card:focus-within {
+  border-color: var(--primary);
+  transform: translateY(-0.75rem) rotateX(2deg) rotateY(1deg);
+  box-shadow:
+    0 10px 15px -3px rgba(99, 102, 241, 0.15),
+    0 20px 25px -5px rgba(236, 72, 153, 0.2),
+    0 30px 35px -5px rgba(236, 72, 153, 0.25);
+}
+
+.education-card:hover::before,
+.education-card:focus-within::before {
+  opacity: 1;
+}
+
+.education-card:hover::after,
+.education-card:focus-within::after {
+  transform: scaleX(1);
+}
+
+/* Card Content */
+.education-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transform: translateZ(30px);
+  transition: transform 0.4s;
+}
+
+.education-card:hover .education-card-content {
+  transform: translateZ(50px);
+}
+
+/* Card Header */
+.education-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.education-card-degree {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.education-mascot {
+  font-size: 1.75rem;
+  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  transform-style: preserve-3d;
+}
+
+.education-card:hover .education-mascot {
+  transform: scale(1.3) rotate(10deg) translateZ(20px);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.education-school,
+.education-location,
+.education-year {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Description */
+.education-description {
+  font-size: 0.875rem;
+  border-left: 2px solid var(--primary);
+  padding-left: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Achievements */
+.education-achievements h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.achievement-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.achievement-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  padding: 0.5rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: var(--transition);
+  transform-style: preserve-3d;
+}
+
+.education-card:hover .achievement-item {
+  transform: translateY(-3px) translateZ(10px);
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+}
+
+/* Skills */
+.education-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.skill-item {
+  background-color: var(--secondary-light);
+  color: var(--primary-mid);
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: var(--transition);
+  transform-style: preserve-3d;
+}
+
+.education-card:hover .skill-item {
+  transform: translateY(-2px) translateZ(5px);
+  box-shadow: 0 2px 4px rgba(236, 72, 153, 0.2);
+}
+
+/* Icons */
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.icon-small {
+  width: 1rem;
+  height: 1rem;
+}
+
+.yellow {
+  color: var(--accent);
+}
+
+/* Accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .education-section {
+    padding: 6rem 0;
+  }
+  .education-card {
+    padding: 1.5rem;
+    transform: none !important;
+  }
+  .education-card:hover::before {
+    display: none;
+  }
+}
+
+
+/* 3D Card Hover Animation */
+.education-card {
+  transform: translateY(0) scale(1) perspective(900px) rotateX(0deg) rotateY(0deg);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    z-index 0s;
+  perspective: 900px;
+  will-change: transform, box-shadow;
+  z-index: 1;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* 3D hover effect, values set by JS */
+.education-card.is-3d-hovered {
+  z-index: 2;
+  --rotateX: 0deg;
+  --rotateY: 0deg;
+  --shadowX: 0px;
+  --shadowY: 12px;
+  --borderGradient: linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6);
+  transform:
+    perspective(900px)
+    rotateX(var(--rotateX, 0deg))
+    rotateY(var(--rotateY, 0deg))
+    scale(1.04);
+  box-shadow:
+    var(--shadowX, 0px) var(--shadowY, 12px) 40px 0 rgba(99, 102, 241, 0.30),
+    0 2px 20px 0 rgba(0,0,0,0.10);
+  border-color: var(--primary);
+}
+
+/* Fancy border animation on hover (use ::after for colored border) */
+.education-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--borderGradient, linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: 
+    transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+.education-card.is-3d-hovered::after,
+.education-card.card-hovered::after {
+  transform: scaleX(1);
+}
+
+/* Responsive: no 3D effect on small screens */
+@media (max-width: 768px) {
+  .education-card {
+    padding: 1.5rem;
+    transform: none !important;
+  }
+  .education-card.is-3d-hovered {
+    transform: none !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .education-card::after {
+    display: none;
+  }
+}
