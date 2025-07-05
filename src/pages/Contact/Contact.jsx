@@ -51,7 +51,6 @@ export default function Contact() {
       return;
     }
 
-    // Store in Firestore
     try {
       await addDoc(collection(db, "contacts"), {
         name: formData.name,
@@ -77,46 +76,46 @@ export default function Contact() {
   return (
     <main className="contact-main">
       <section className="contact-hero">
-        <div className="container mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="container">
+          <div className="contact-grid">
             {/* Contact Info */}
-            <div className="space-y-8">
+            <div className="contact-info">
               <div>
                 <h2 className="contact-heading">Get in Touch</h2>
                 <p className="contact-subheading">
                   Have a question or want to work together? Drop me a message!
                 </p>
               </div>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
+              <div className="contact-details">
+                <div className="contact-detail-item">
                   <div className="contact-icon mail">
-                    <Mail className="w-6 h-6 text-purple-400" />
+                    <Mail className="icon" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Email</h3>
-                    <p className="text-gray-400">shamjohari101@gmail.com</p>
+                    <h3>Email</h3>
+                    <p>shamjohari101@gmail.com</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="contact-detail-item">
                   <div className="contact-icon map">
-                    <MapPin className="w-6 h-6 text-pink-400" />
+                    <MapPin className="icon" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Location</h3>
-                    <p className="text-gray-400">Pune, Maharashtra, India</p>
+                    <h3>Location</h3>
+                    <p>Pune, Maharashtra, India</p>
                   </div>
                 </div>
               </div>
             </div>
             {/* Contact Form */}
             <div className="contact-form-wrapper">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 gap-6">
+              <form onSubmit={handleSubmit} className="contact-form">
+                <div className="form-grid">
                   <div>
                     <input
                       type="text"
                       placeholder="Your Name"
-                      className={`contact-input ${errors.name ? "border-red-500" : "border-gray-700"}`}
+                      className={`contact-input ${errors.name ? "input-error" : ""}`}
                       value={formData.name}
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
@@ -130,7 +129,7 @@ export default function Contact() {
                     <input
                       type="email"
                       placeholder="Your Email"
-                      className={`contact-input ${errors.email ? "border-red-500" : "border-gray-700"}`}
+                      className={`contact-input ${errors.email ? "input-error" : ""}`}
                       value={formData.email}
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
@@ -144,7 +143,7 @@ export default function Contact() {
                     <input
                       type="text"
                       placeholder="Subject"
-                      className={`contact-input ${errors.subject ? "border-red-500" : "border-gray-700"}`}
+                      className={`contact-input ${errors.subject ? "input-error" : ""}`}
                       value={formData.subject}
                       onChange={(e) =>
                         setFormData({ ...formData, subject: e.target.value })
@@ -158,7 +157,7 @@ export default function Contact() {
                     <textarea
                       placeholder="Your Message"
                       rows="4"
-                      className={`contact-input resize-none ${errors.message ? "border-red-500" : "border-gray-700"}`}
+                      className={`contact-input textarea ${errors.message ? "input-error" : ""}`}
                       value={formData.message}
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
@@ -174,17 +173,11 @@ export default function Contact() {
                   className="contact-submit"
                 >
                   <span>Send Message</span>
-                  <Send className="w-4 h-4" />
+                  <Send className="submit-icon" />
                 </button>
               </form>
               {status && (
-                <div
-                  className={`mt-4 text-center ${
-                    status.includes("success")
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
+                <div className={`status-message ${status.includes("success") ? "success" : "error"}`}>
                   <p>{status}</p>
                 </div>
               )}

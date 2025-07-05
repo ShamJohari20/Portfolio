@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { Code2, Layers, Network } from "lucide-react";
 import "./Experience.css";
 
-// Helper for pointer detection
 const isTouchDevice = () =>
   typeof window !== "undefined" &&
   window.matchMedia &&
@@ -27,7 +26,6 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
   const cardRef = useRef(null);
   const isTouch = isTouchDevice();
 
-  // Handlers for 3D hover only on non-touch devices
   const handleMouseMove = (e) => {
     if (isTouch) return;
     const card = cardRef.current;
@@ -49,11 +47,13 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
     card.style.setProperty("--rotateY", `0deg`);
     card.style.setProperty("--shadowX", `0px`);
     card.style.setProperty("--shadowY", `12px`);
-    card.style.setProperty("--borderGradient", `linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6)`);
+    card.style.setProperty(
+      "--borderGradient",
+      `linear-gradient(90deg, #ec4899, #3b82f6, #8b5cf6)`
+    );
     card.classList.remove("is-3d-hovered");
   };
 
-  // Style disables 3D transforms and sets flat shadow for mobile
   const cardStyle = isTouch
     ? {
         transform: "none",
@@ -75,7 +75,6 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
       <div className="experience-card-border" />
       <div className="experience-card-content">
         <div className="experience-icon-container">
-          <div className="experience-icon-pulse" />
           <Icon className="experience-icon" />
         </div>
         <h3 className="experience-card-title">{title}</h3>
@@ -84,8 +83,6 @@ const ExperienceCard = ({ icon: Icon, title, company, period, description }) => 
           <span className="experience-card-period">{period}</span>
         </div>
         <p className="experience-card-description">{description}</p>
-        <div className="experience-card-corner experience-card-corner-top-right" />
-        <div className="experience-card-corner experience-card-corner-bottom-left" />
       </div>
     </div>
   );
@@ -120,11 +117,11 @@ const ExperienceSection = () => {
   ];
 
   return (
-    <section className="experience-section animate-in">
+    <section className="experience-section">
       <div className="experience-bg-base" />
       <div className="experience-grid-bg" />
       <div className="experience-particles">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
             className="experience-particle"
@@ -138,10 +135,7 @@ const ExperienceSection = () => {
       </div>
       <div className="experience-container">
         <div className="experience-header">
-          <div className="experience-title-wrapper">
-            <h2 className="experience-title">Professional Journey</h2>
-            <div className="experience-title-shadow" />
-          </div>
+          <h2 className="experience-title">Professional Journey</h2>
           <p className="experience-subtitle">
             "Transforming ideas into digital reality, one project at a time"
           </p>
@@ -152,8 +146,6 @@ const ExperienceSection = () => {
           ))}
         </div>
       </div>
-      <div className="experience-bg-blur-circle experience-bg-blur-circle-cyan" />
-      <div className="experience-bg-blur-circle experience-bg-blur-circle-purple" />
     </section>
   );
 };

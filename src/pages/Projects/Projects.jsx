@@ -58,7 +58,7 @@ const projects = [
   },
   {
     title: "GlobeXchange",
-    description: "Real-time currency converter with live exchange rates.",
+    description: "Real time currency converter with live exchange rates.",
     link: GXCImg,
     color: "#b2f2c9",
     githubLink: "https://github.com/ShamJohari20/GlobeXchange",
