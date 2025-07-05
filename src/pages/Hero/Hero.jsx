@@ -100,11 +100,11 @@ export default function Hero() {
   // For mobile, flatten the code card style
   const codeCardStyle = isTouchDevice()
     ? {
-        transform: "none",
-        willChange: "auto",
-        boxShadow:
-          "0 6px 18px 0 rgba(244,114,182,0.14),0 1px 8px 0 rgba(40,40,80,0.18),0 16px 32px -6px rgba(0,0,0,0.20),0 0.5px 2px 0 rgba(244,114,182,0.05)",
-      }
+      transform: "none",
+      willChange: "auto",
+      boxShadow:
+        "0 6px 18px 0 rgba(244,114,182,0.14),0 1px 8px 0 rgba(40,40,80,0.18),0 16px 32px -6px rgba(0,0,0,0.20),0 0.5px 2px 0 rgba(244,114,182,0.05)",
+    }
     : {};
 
   return (
@@ -144,8 +144,8 @@ export default function Hero() {
 
               <div className="hero__description">
                 <p>
-                  Full Stack Dev | HTML, CSS, JS, Bootstrap, Tailwind CSS, React JS | 
-                  Java SE & Java EE, Spring, Spring Boot, Microservices | 
+                  Full Stack Dev | HTML, CSS, JS, Bootstrap, Tailwind CSS, React JS |
+                  Java SE & Java EE, Spring, Spring Boot, Microservices |
                   Oracle SQL & PL/SQL | DevSecOps | AWS
                 </p>
               </div>
@@ -158,7 +158,12 @@ export default function Hero() {
                   </span>
                 </a>
 
-                <a href="#" className="hero__cta-button hero__cta-button--secondary">
+                <a
+                  href="https://drive.google.com/file/d/1c5BBf_kZKwcHortmTvkwJa6VfC_gHvbd/view?usp=sharing"
+                  className="hero__cta-button hero__cta-button--secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <span className="hero__button-content">
                     <span>Get Resume</span>
                     <i className="fas fa-envelope hero__button-icon" />
