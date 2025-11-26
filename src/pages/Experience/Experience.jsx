@@ -94,7 +94,7 @@ const ExperienceSection = () => {
       icon: Network,
       title: "Full Stack Java Course",
       company: "Naresh IT",
-      period: "Dec 2024 - Present",
+      period: "Dec 2024 - Dec 2025",
       description:
         "The training covered both frontend and backend technologies. It included hands on projects, real time coding practice, and preparation for full cycle web application development and deployment.",
     },

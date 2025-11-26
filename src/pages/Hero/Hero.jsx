@@ -159,7 +159,7 @@ export default function Hero() {
                 </a>
 
                 <a
-                  href="https://drive.google.com/file/d/1c5BBf_kZKwcHortmTvkwJa6VfC_gHvbd/view?usp=sharing"
+                  href="https://drive.google.com/file/d/12KjKKRM4F9KAh_kzr8VuIOpndhH_6m1L/view?usp=sharing"
                   className="hero__cta-button hero__cta-button--secondary"
                   target="_blank"
                   rel="noopener noreferrer"
